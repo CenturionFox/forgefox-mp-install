@@ -1,0 +1,6 @@
+com.attributestudios.minecraft.installer
+com.attributestudios.minecraft.installer.enums
+com.attributestudios.minecraft.installer.gui
+com.attributestudios.minecraft.installer.tasks
+com.attributestudios.minecraft.installer.tasks.threading
+com.attributestudios.minecraft.installer.updates
