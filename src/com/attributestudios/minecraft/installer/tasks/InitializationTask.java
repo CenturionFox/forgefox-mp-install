@@ -17,7 +17,7 @@ import com.attributestudios.minecraft.installer.gui.SplashScreen;
 import com.attributestudios.minecraft.installer.tasks.threading.DownloaderThread;
 import com.attributestudios.minecraft.installer.tasks.threading.UnzippingThread;
 
-public class InitializationTasks implements Runnable
+public class InitializationTask implements Runnable
 {
 	private SplashScreen splash;
 	

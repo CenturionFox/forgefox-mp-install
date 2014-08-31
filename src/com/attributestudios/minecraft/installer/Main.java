@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 import com.attributestudios.api.util.Localizer;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.api.util.logging.SimpleLogFormatter;
-import com.attributestudios.minecraft.installer.tasks.InitializationTasks;
+import com.attributestudios.minecraft.installer.tasks.InitializationTask;
+import com.attributestudios.minecraft.installer.tasks.UpdateReadTask;
 import com.attributestudios.minecraft.installer.updates.Update;
 
 /**
@@ -65,11 +66,11 @@ public class Main
 		
 		if(!Settings.isDropbox())
 		{
-			Thread preInstall = new Thread(new InitializationTasks(), "Pre-Install");
-			
 			// Delegate current to the new thread, wait until that
 			// 	   thread's execution is complete before continuing.
-			preInstall.run();
+			new InitializationTask().run();
+			new UpdateReadTask().run();
+			
 		}
 		else
 		{

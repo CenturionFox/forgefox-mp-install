@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.attributestudios.api.util.ConfigurationLoader;
+import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.minecraft.installer.enums.ModImage;
 
 /**
@@ -111,13 +112,15 @@ public class Settings
 			// Load in all these utility classes to initialize their static loggers.
 			Class.forName("com.attributestudios.api.util.Localizer");
 			Class.forName("com.attributestudios.api.util.ConfigurationLoader");
-			Class.forName("com.attributestudios.api.util.io.ObjectDownloader");
+			Class.forName("com.attributestudios.api.util.io.ResourceDownloader");
 			Class.forName("com.attributestudios.api.util.io.ZippingUtils");
 		}
 		catch(IllegalArgumentException | ClassNotFoundException exception)
 		{
-			Main.log("Unable to set logger level!", Level.WARNING);
-			return;
+			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
+					exception,
+					"Unable to set logging level: ", 
+					Level.WARNING);
 		}
 		
 		loggerSet.add(Logger.getLogger("Localization"));

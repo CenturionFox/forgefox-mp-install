@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ import java.util.List;
  * @version 1.0.0
  * @date.	2014-08-19
  */
-public class Update implements Serializable
+public class Update implements Serializable, Collection<UpdateFile>
 {	
 	/**
 	 * The version UID for the Update object.
@@ -75,16 +77,12 @@ public class Update implements Serializable
 	{
 		this.updateDate = updateDate;
 	}
-	
-	/**
-	 * Gets a reference to the list of files to include in the update.
-	 * @return A reference to the file update list, which can be edited
-	 */
+
 	public List<UpdateFile> getUpdatedFiles()
 	{
 		return this.updatedFiles;
 	}
-
+	
 	/**
 	 * Sets the list of updated files to a new list of updated files.
 	 * @param updatedFiles The new list of updated files to set as the list of updated files.
@@ -98,9 +96,9 @@ public class Update implements Serializable
 	 * Writes the update to a new XML file with a name equivalent to "update_" + the update date.
 	 * @throws IOException Thrown when the XML file fails to be written to the disk.
 	 */
-	public void writeToXML() throws IOException
+	public void writeToXML(File updateDirectory) throws IOException
 	{
-		File updateXML = new File("./updates/update_" + this.updateDate + ".xml");
+		File updateXML = new File(updateDirectory.getPath() + "/update_" + this.updateDate + ".xml");
 		try(BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(updateXML));
 			XMLEncoder encoder = new XMLEncoder(output))
 		{
@@ -121,5 +119,89 @@ public class Update implements Serializable
 		{
 			return (Update)decoder.readObject();
 		}
+	}
+
+	/**
+	 * Adds an {@link UpdateFile} to the file list.
+	 * @param file The UpdateFile to add.
+	 * @return
+	 */
+	@Override
+	public boolean add(UpdateFile file)
+	{
+		return this.updatedFiles.add(file);
+	}
+	
+	@Override
+	public boolean addAll(Collection<? extends UpdateFile> c) 
+	{
+		return this.updatedFiles.addAll(c);
+	}
+
+	@Override
+	public void clear() 
+	{
+		this.updatedFiles.clear();
+	}
+
+	@Override
+	public boolean contains(Object o) 
+	{
+		return this.updatedFiles.contains(o);
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) 
+	{
+		return this.updatedFiles.contains(c);
+	}
+
+	@Override
+	public boolean isEmpty() 
+	{
+		return this.updatedFiles.isEmpty();
+	}
+
+	@Override
+	public Iterator<UpdateFile> iterator() 
+	{
+		return this.updatedFiles.iterator();
+	}
+
+	@Override
+	public boolean remove(Object o) 
+	{
+		return this.updatedFiles.remove(o);
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) 
+	{
+		return this.updatedFiles.removeAll(c);
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c)
+	{
+		return this.updatedFiles.retainAll(c);
+	}
+
+	@Override
+	public int size() 
+	{
+		return this.updatedFiles.size();
+	}
+
+	@Override
+	public Object[] toArray() 
+	{
+		return this.updatedFiles.toArray();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T[] toArray(T[] a) 
+	{
+		return (T[]) this.toArray();
 	}
 }
