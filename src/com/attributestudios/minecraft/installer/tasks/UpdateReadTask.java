@@ -30,34 +30,37 @@ public class UpdateReadTask implements Runnable
 	@Override
 	public void run()
 	{
-		List<File> filesInDir;
-		File dir = new File(Settings.config.getValue("update.folder", "./updates"));
+		List<File> validUpdateFiles;
+		File updateDirectory = new File(Settings.config.getValue("update.folder", "./updates"));
 		
-		Main.log("Reading updates from " + dir.getAbsolutePath() + "...");
+		// Create the update directory
+		if(!updateDirectory.exists()) updateDirectory.mkdirs();
 		
-		if(!dir.isDirectory())
+		Main.log("Reading updates from " + updateDirectory.getAbsolutePath() + "...");
+		
+		if(!updateDirectory.isDirectory())
 		{
 			throw new RuntimeException(
 					new FileSystemException("File " + Settings.config.getValue("update.folder", "./updates") + " is not a directory!"));
 		}
 		
-		filesInDir = Arrays.asList(dir.listFiles(new FileFilter()
+		validUpdateFiles = Arrays.asList(updateDirectory.listFiles(new FileFilter()
 		{
 			/**
 			 * Tests if the given file should be included in the valid file list.
 			 * A file is valid if it is not a directory and its extension is ".xml".
 			 * 
-			 * @param arg0 The file to check.
+			 * @param file The file to check.
 			 */
-			public boolean accept(File arg0)
+			public boolean accept(File file)
 			{
-				return arg0.getName().matches("update_\\S+.xml") && !arg0.isDirectory();
+				return file.getName().matches("update_\\S+.xml") && !file.isDirectory();
 			}
 		}));
 
 		int filesRead = 0;
 		
-		for(File file : filesInDir)
+		for(File file : validUpdateFiles)
 		{
 			Main.log("Reading update file " + file.getAbsolutePath(), Level.FINE);
 			try 

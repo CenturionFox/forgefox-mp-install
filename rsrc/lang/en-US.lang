@@ -43,4 +43,7 @@ splash.debug.extract=Extracting new updates...
 splash.debug.copy.md5=Copying new MD5s from temp directory.
 splash.debug.failure=Download and unzip failed!
 
+splash.debug.update.populate=Populating update lists...
+splash.debug.update.complete=Update list populated!
+
 splash.debug.completion=Initialization complete.

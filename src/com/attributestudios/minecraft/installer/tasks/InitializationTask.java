@@ -65,7 +65,10 @@ public class InitializationTask implements Runnable
 												Level.SEVERE);
 		}
 		
-		//TODO: Set up update lists!
+		//Set up update lists
+		this.splash.printLocalizedText("splash.debug.update.populate");
+		new UpdateReadTask().run();
+		this.splash.printLocalizedText("splash.debug.update.complete");
 		
 		try
 		{
@@ -76,7 +79,10 @@ public class InitializationTask implements Runnable
 		}
 		catch (InterruptedException e)
 		{
-			// Interruped? No problem, just keep going!
+			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
+				e,
+				"The thread's sleep was interrupted unexpectedly.",
+				Level.WARNING);
 		}
 		
 		this.splash.setVisible(false);
@@ -102,9 +108,9 @@ public class InitializationTask implements Runnable
 		catch (IOException e)
 		{
 			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
-												e,
-												"Unable to copy MD5 information: ",
-												Level.SEVERE);
+				e,
+				"Unable to copy MD5 information: ",
+				Level.SEVERE);
 		}
 	}
 
@@ -137,9 +143,9 @@ public class InitializationTask implements Runnable
 		catch(IOException e)
 		{
 			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
-												e,
-												"Unable to read MD5 files. ",
-												Level.SEVERE);
+				e,
+				"Unable to read MD5 files. ",
+				Level.SEVERE);
 			Main.log("Assuming download necessary...", Level.WARNING);
 			return false;
 		}
