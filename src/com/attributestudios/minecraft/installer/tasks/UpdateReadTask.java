@@ -75,7 +75,8 @@ public class UpdateReadTask implements Runnable
 			}
 		}
 		
-		Main.log("Read in " + filesRead + " updates successfully!");
+		Main.log(filesRead > 0 ? "Read in " + filesRead + " update" + (filesRead == 1 ? "" : "s") + " successfully!" :
+			"No update files could be found.");
 	}
 
 }

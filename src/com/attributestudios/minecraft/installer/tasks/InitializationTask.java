@@ -17,10 +17,21 @@ import com.attributestudios.minecraft.installer.gui.SplashScreen;
 import com.attributestudios.minecraft.installer.tasks.threading.DownloaderThread;
 import com.attributestudios.minecraft.installer.tasks.threading.UnzippingThread;
 
+/**
+ * 
+ * @author bem9
+ *
+ */
 public class InitializationTask implements Runnable
 {
+	/**
+	 * 
+	 */
 	private SplashScreen splash;
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void run()
 	{
@@ -60,15 +71,25 @@ public class InitializationTask implements Runnable
 		{
 			this.splash.printLocalizedText("splash.debug.failure");
 			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
-												exception, 
-												"Failed to download files: ", 
-												Level.SEVERE);
+				exception, 
+				"Failed to download files: ", 
+				Level.SEVERE);
 		}
 		
 		//Set up update lists
 		this.splash.printLocalizedText("splash.debug.update.populate");
-		new UpdateReadTask().run();
-		this.splash.printLocalizedText("splash.debug.update.complete");
+		try
+		{
+			new UpdateReadTask().run();
+			this.splash.printLocalizedText("splash.debug.update.complete");
+		}
+		catch(RuntimeException e)
+		{
+			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
+				e,
+				"Update read task did not complete successfully: ",
+				Level.SEVERE);
+		}
 		
 		try
 		{
@@ -81,13 +102,16 @@ public class InitializationTask implements Runnable
 		{
 			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
 				e,
-				"The thread's sleep was interrupted unexpectedly.",
+				"The thread's sleep was interrupted unexpectedly. ",
 				Level.WARNING);
 		}
 		
 		this.splash.setVisible(false);
 	}
 
+	/**
+	 * 
+	 */
 	private void copyMD5s()
 	{
 		Main.log("Replacing old MD5 file.");

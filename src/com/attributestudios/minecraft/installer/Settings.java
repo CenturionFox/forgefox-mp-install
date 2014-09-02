@@ -59,7 +59,7 @@ public class Settings
 				updateDropbox = true;
 			}
 			// Switch to enable verbose logging in the specified level
-			else if(s.matches("[-d:].+"))
+			else if(s.matches("[-d:]\\S+"))
 			{
 				String levelName = s.split(":")[1].toUpperCase();
 				setupLoggers(levelName);
