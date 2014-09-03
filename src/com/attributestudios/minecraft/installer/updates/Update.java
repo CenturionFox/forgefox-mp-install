@@ -43,6 +43,11 @@ public class Update implements Serializable, Collection<UpdateFile>
 	private String updateDate;
 	
 	/**
+	 * A description of the update (why is the update being done, what changed)
+	 */
+	private String updateDescription;
+	
+	/**
 	 * A list of all files that should be updated.
 	 */
 	private List<UpdateFile> updatedFiles;
@@ -55,6 +60,9 @@ public class Update implements Serializable, Collection<UpdateFile>
 	{
 		// Set the update date to the java standard epoch (1970-01-01)
 		this.updateDate = "1970-01-01";
+		
+		// Set the update description to "No description available."
+		this.updateDescription = "No description available.";
 		
 		// Initialize the updated file list.
 		this.updatedFiles = new ArrayList<UpdateFile>();
@@ -78,6 +86,16 @@ public class Update implements Serializable, Collection<UpdateFile>
 		this.updateDate = updateDate;
 	}
 
+	public String getUpdateDescription()
+	{
+		return this.updateDescription;
+	}
+	
+	public void setUpdateDescription(String newDescription)
+	{
+		this.updateDescription = newDescription;
+	}
+	
 	public List<UpdateFile> getUpdatedFiles()
 	{
 		return this.updatedFiles;
