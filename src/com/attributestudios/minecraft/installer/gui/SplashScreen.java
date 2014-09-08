@@ -124,12 +124,19 @@ public class SplashScreen extends JFrame implements Runnable
 		this.progressOutput.setText(this.progressOutput.getText() + "<br>" + localized);
 	}
 
+	/**
+	 * "Finishes" the progress bar by setting it to 100% and disabling the indeterminate
+	 * 	animation.
+	 */
 	public void finishProgressBar()
 	{
 		this.userComfort.setIndeterminate(false);
 		this.userComfort.setValue(100);
 	}
 
+	/**
+	 * Keeps the splash screen on top of all other windows.
+	 */
 	@Override
 	public void run()
 	{
@@ -137,5 +144,7 @@ public class SplashScreen extends JFrame implements Runnable
 		{
 			this.setAlwaysOnTop(true);
 		}
+		
+		Main.log("Hiding splash screen...", Level.FINE);
 	}
 }
