@@ -13,7 +13,7 @@ import org.apache.commons.io.IOUtils;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.minecraft.installer.Main;
 import com.attributestudios.minecraft.installer.Settings;
-import com.attributestudios.minecraft.installer.gui.SplashScreen;
+import com.attributestudios.minecraft.installer.gui.ScreenSplash;
 import com.attributestudios.minecraft.installer.tasks.threading.DownloaderThread;
 import com.attributestudios.minecraft.installer.tasks.threading.UnzippingThread;
 
@@ -31,7 +31,7 @@ public class InitializationTask implements Runnable
 	 * This screen also contains a status window that outputs the current progress
 	 * 	of the initialization tasks.
 	 */
-	private SplashScreen splash;
+	private ScreenSplash splash;
 	
 	/**
 	 * Shows a splash screen, displays output to the user to convey what is currently
@@ -41,7 +41,7 @@ public class InitializationTask implements Runnable
 	@Override
 	public void run()
 	{
-		this.splash = new SplashScreen();
+		this.splash = new ScreenSplash();
 		
 		this.splash.setVisible(true);
 		

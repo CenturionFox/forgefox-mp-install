@@ -31,7 +31,7 @@ import com.attributestudios.minecraft.installer.Main;
  * @version 2.0.0
  * @date. 2014-08-14
  */
-public class SplashScreen extends JFrame implements Runnable
+public class ScreenSplash extends JFrame implements Runnable
 {
 	/**
 	 * The serial version ID for the ForgeFox splash screen.
@@ -49,7 +49,7 @@ public class SplashScreen extends JFrame implements Runnable
 	 * Create the frame.
 	 * This sets the frame layout to
 	 */
-	public SplashScreen()
+	public ScreenSplash()
 	{
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		this.setType(Type.UTILITY);
