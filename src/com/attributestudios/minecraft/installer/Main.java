@@ -14,6 +14,7 @@ import com.attributestudios.api.util.Localizer;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.api.util.logging.SimpleLogFormatter;
 import com.attributestudios.minecraft.installer.tasks.InitializationTask;
+import com.attributestudios.minecraft.installer.tasks.MainWindowTasks;
 import com.attributestudios.minecraft.installer.updates.Update;
 
 /**
@@ -68,7 +69,7 @@ public class Main
 			// Delegate current to the new thread, wait until that
 			// 	   thread's execution is complete before continuing.
 			new InitializationTask().run();
-			
+			new MainWindowTasks().run();
 		}
 		else
 		{

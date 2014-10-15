@@ -46,4 +46,6 @@ splash.debug.failure=Download and unzip failed!
 splash.debug.update.populate=Populating update lists...
 splash.debug.update.complete=Update list populated!
 
+splash.debug.load.images=Loading label images...
+
 splash.debug.completion=Initialization complete.

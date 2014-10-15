@@ -67,7 +67,7 @@ public class ScreenSplash extends JFrame implements Runnable
 
 		try
 		{
-			Main.log("Reading in image " + modImage + "...");
+			Main.log("Reading in image " + modImage + "...", Level.FINER);
 			splashBG = ImageIO.read(Main.class.getClassLoader().getResourceAsStream(modImage));
 
 		}

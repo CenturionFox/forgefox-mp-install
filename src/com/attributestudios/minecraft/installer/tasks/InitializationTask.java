@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.minecraft.installer.Main;
 import com.attributestudios.minecraft.installer.Settings;
+import com.attributestudios.minecraft.installer.gui.ScreenMain;
 import com.attributestudios.minecraft.installer.gui.ScreenSplash;
 import com.attributestudios.minecraft.installer.tasks.threading.DownloaderThread;
 import com.attributestudios.minecraft.installer.tasks.threading.UnzippingThread;
@@ -105,6 +106,9 @@ public class InitializationTask implements Runnable
 				"Update read task did not complete successfully: ",
 				Level.SEVERE);
 		}
+		
+		this.splash.printLocalizedText("splash.debug.load.images");
+		ScreenMain.intializeImageList();
 		
 		try
 		{
