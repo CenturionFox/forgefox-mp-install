@@ -12,9 +12,12 @@ public class MainWindowTasks implements Runnable
 	{
 		// Initialize main screen and set image label to 0.
 		this.mainScreen = new ScreenMain();
-		this.mainScreen.setImageIcon(0);
+		this.mainScreen.setCurrentImagePaneIndex(0);
 		
 		this.mainScreen.setVisible(true);
+		this.mainScreen.requestFocus();
+		
+		new Thread(this.mainScreen, "MainScreen Image Iteration Thread").start();
 		
 		while(this.mainScreen.isVisible())
 		{

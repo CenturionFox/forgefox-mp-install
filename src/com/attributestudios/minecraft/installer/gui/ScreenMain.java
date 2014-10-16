@@ -1,7 +1,8 @@
 package com.attributestudios.minecraft.installer.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,34 +12,48 @@ import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.attributestudios.minecraft.installer.Main;
 import com.attributestudios.minecraft.installer.enums.ModImage;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import com.attributestudios.minecraft.installer.gui.swing.JImagePane;
+import javax.swing.JTabbedPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
-public class ScreenMain extends JFrame
+public class ScreenMain extends JFrame implements Runnable
 {
 	private static final long	serialVersionUID	= 8465552478290576935L;
 	private JPanel	contentPane;
 	
-	private static ArrayList<ImageIcon> imagesList;
+	private static ArrayList<BufferedImage> imagesList;
 	
 	private static boolean imageListInitialized = false;
-	private JLabel imageLabel;
+	private JImagePane imageLabel;
 	
 	private int currentIconIndex;
 	
 	/**
-	 * Create the frame.
+	 * Locking object for thread synchronization.
+	 */
+	private final Object lock = new Object();
+	
+	private int imageSwitchTimer;
+	
+	/**
+	 * Create the main screen.
+	 */
+	/**
+	 * 
 	 */
 	public ScreenMain()
 	{
@@ -48,40 +63,49 @@ public class ScreenMain extends JFrame
 		}
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 790, 470);
+		this.setBounds(100, 100, 825, 500);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(this.contentPane);
 		this.setTitle("Forgefox Modpack Installer");
-		
-		JPanel imagePanel = new JPanel();
-		imagePanel.setBorder(UIManager.getBorder("ToolTip.border"));
+		this.setAutoRequestFocus(true);
 		
 		JPanel advancedOptionsPanel = new JPanel();
-		advancedOptionsPanel.setBorder(UIManager.getBorder("ToolTip.border"));
+		advancedOptionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.extrasettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		JTabbedPane modTabs = new JTabbedPane(JTabbedPane.TOP);
+		modTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		
 		GroupLayout gl_contentPane = new GroupLayout(this.contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(imagePanel, GroupLayout.PREFERRED_SIZE, 564, GroupLayout.PREFERRED_SIZE)
+					.addComponent(modTabs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(advancedOptionsPanel, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+					.addComponent(advancedOptionsPanel, GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(advancedOptionsPanel, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-						.addComponent(imagePanel, GroupLayout.PREFERRED_SIZE, 256, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(modTabs, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+						.addComponent(advancedOptionsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE))
 					.addContainerGap())
 		);
+		
+		JPanel tabPanel0 = new JPanel();
+		modTabs.addTab(Main.english.localize("ui.tabs.fullinstall"), null, tabPanel0, Main.english.localize("ui.tabs.fullinstall.tip"));
+		
+		JPanel imagePanel = new JPanel();
+		imagePanel.setBorder(UIManager.getBorder("TitledBorder.border"));
 		imagePanel.setLayout(new BorderLayout(0, 0));
 		
-		JButton iterateImageLeft = new JButton("<");
-		
+		// Define "previous image" buttons
+		JButton iterateImageLeft = new JButton("◄");
+		iterateImageLeft.setToolTipText("Previous Image");
 		iterateImageLeft.addMouseListener(new MouseAdapter() {
 			/* (non-Javadoc)
 			 * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
@@ -97,13 +121,15 @@ public class ScreenMain extends JFrame
 					ScreenMain.this.currentIconIndex = imagesList.size() - 1;
 				}
 				
-				ScreenMain.this.setImageIcon(ScreenMain.this.currentIconIndex);
+				ScreenMain.this.setCurrentImagePaneIndex(ScreenMain.this.currentIconIndex);
 			}
 		});
-		
 		imagePanel.add(iterateImageLeft, BorderLayout.WEST);
 		
-		JButton iterateImageRight = new JButton(">");
+		
+		// Define "next image" button.
+		JButton iterateImageRight = new JButton("►");
+		iterateImageRight.setToolTipText("Next Image");
 		iterateImageRight.addMouseListener(new MouseAdapter() {
 			/* (non-Javadoc)
 			 * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
@@ -119,13 +145,38 @@ public class ScreenMain extends JFrame
 					ScreenMain.this.currentIconIndex = 0;
 				}
 				
-				ScreenMain.this.setImageIcon(ScreenMain.this.currentIconIndex);
+				ScreenMain.this.setCurrentImagePaneIndex(ScreenMain.this.currentIconIndex);
 			}
 		});
 		imagePanel.add(iterateImageRight, BorderLayout.EAST);
 		
-		this.imageLabel = new JLabel("");
+		
+		this.imageLabel = new JImagePane(null);
 		imagePanel.add(this.imageLabel, BorderLayout.CENTER);
+		
+		
+		JPanel installOptionsPanel0 = new JPanel();
+		installOptionsPanel0.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GroupLayout gl_tabPanel0 = new GroupLayout(tabPanel0);
+		gl_tabPanel0.setHorizontalGroup(
+			gl_tabPanel0.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_tabPanel0.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_tabPanel0.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(installOptionsPanel0, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(imagePanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_tabPanel0.setVerticalGroup(
+			gl_tabPanel0.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_tabPanel0.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(imagePanel, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(installOptionsPanel0, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		tabPanel0.setLayout(gl_tabPanel0);
 		this.contentPane.setLayout(gl_contentPane);
 	}
 
@@ -137,7 +188,7 @@ public class ScreenMain extends JFrame
 	{
 		try
 		{
-			imagesList = new ArrayList<ImageIcon>(ModImage.values().length);
+			imagesList = new ArrayList<BufferedImage>(ModImage.values().length);
 			
 			for(ModImage modImage : ModImage.values())
 			{
@@ -147,11 +198,7 @@ public class ScreenMain extends JFrame
 				
 				BufferedImage bufferedImage = ImageIO.read(Main.class.getClassLoader().getResourceAsStream(imageLoc));
 				
-				// Resize the current image.
-				Graphics resizeGraphics = bufferedImage.createGraphics();
-				resizeGraphics.drawImage(bufferedImage, 0, 0, (int)(bufferedImage.getWidth() / 1.15F), (int)(bufferedImage.getHeight() / 1.15F), null);
-				
-				imagesList.add(new ImageIcon(bufferedImage));
+				imagesList.add(bufferedImage);
 			}
 			
 			
@@ -167,14 +214,48 @@ public class ScreenMain extends JFrame
 	 * Sets the current icon of the 
 	 * @param index
 	 */
-	public void setImageIcon(int index) 
+	public void setCurrentImagePaneIndex(int index) 
 	{
-		this.imageLabel.setIcon(imagesList.get(index));
-		this.currentIconIndex = index;
+		this.imageLabel.setImage(imagesList.get(index));
+		this.imageLabel.setToolTipText(Main.english.localize("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
+		
+		synchronized(this.lock)
+		{
+			this.currentIconIndex = index;
+			this.imageSwitchTimer = 0;
+		}
 	}
 
-	public static List<ImageIcon> getImageList()
+	public static List<BufferedImage> getImageList()
 	{
 		return imagesList;
+	}
+
+	@Override
+	public void run()
+	{
+		while(this.isVisible())
+		{
+			synchronized(this.lock)
+			{
+				if(++this.imageSwitchTimer > 10)
+				{
+					if(++this.currentIconIndex >= imagesList.size())
+					{
+						this.currentIconIndex = 0;
+					}
+					
+					this.setCurrentImagePaneIndex(this.currentIconIndex);
+				}
+			}
+			
+			try
+			{
+				Thread.sleep(1000);
+			} catch(InterruptedException e)
+			{
+				// continue unconcerned
+			}
+		}
 	}
 }

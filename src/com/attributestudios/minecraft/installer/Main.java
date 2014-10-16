@@ -53,6 +53,9 @@ public class Main
 	 */
 	public static void main(String[] args) 
 	{
+		// Signal start
+		log("Starting ForgeFox Modpack Installer...");
+		
 		// Set up the English language localization
 		InputStream language = Main.class.getClassLoader().getResourceAsStream("lang/en-US.lang");
 		english = new Localizer(language, "en-US");
@@ -60,9 +63,6 @@ public class Main
 		
 		Settings.loadConfig();
 		Settings.parseCommands(args);
-		
-		// Signal start
-		log("Starting ForgeFox Modpack Installer...");
 		
 		if(!Settings.isDropbox())
 		{

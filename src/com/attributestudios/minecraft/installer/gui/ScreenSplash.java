@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,8 +17,9 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.attributestudios.api.util.logging.LoggingUtil;
-import com.attributestudios.minecraft.installer.Settings;
 import com.attributestudios.minecraft.installer.Main;
+import com.attributestudios.minecraft.installer.Settings;
+import com.attributestudios.minecraft.installer.gui.swing.JImagePane;
 
 
 /**
@@ -84,7 +84,6 @@ public class ScreenSplash extends JFrame implements Runnable
 		this.progressOutput = new JLabel();
 		this.progressOutput.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		this.progressOutput.setVerticalAlignment(SwingConstants.BOTTOM);
-		this.progressOutput.setText("<html>");
 		this.progressOutput.setBackground(Color.LIGHT_GRAY);
 		this.progressOutput.setForeground(Color.WHITE);
 		this.progressOutput.setBounds(10, 11, 530, 201);
@@ -103,13 +102,13 @@ public class ScreenSplash extends JFrame implements Runnable
 		forgeFoxLabel.setBounds(10, 223, 377, 29);
 		this.contentPane.add(forgeFoxLabel);
 
-		JLabel imgLabel = new JLabel(new ImageIcon(splashBG));
-		imgLabel.setBounds(0, 0, 550, 275);
-		this.contentPane.add(imgLabel);
+		JImagePane imgPane = new JImagePane(splashBG);
+		imgPane.setBounds(0, 0, 550, 275);
+		this.contentPane.add(imgPane);
 
 		this.setLocationRelativeTo(null);
 
-		this.printLocalizedText("splash.debug.initialize");
+		this.progressOutput.setText("<html>Initializing...");
 	}
 
 	/**

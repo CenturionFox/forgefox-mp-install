@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.logging.Level;
 
 import org.apache.commons.io.IOUtils;
 
+import com.attributestudios.api.util.Localizer;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.minecraft.installer.Main;
 import com.attributestudios.minecraft.installer.Settings;
@@ -50,66 +52,66 @@ public class InitializationTask implements Runnable
 		//	other windows.
 		Thread setScreenOnTop = new Thread(this.splash, "Splash Screen On-Top");
 		setScreenOnTop.setPriority(Thread.MIN_PRIORITY);
-		setScreenOnTop.start();
-		
-		this.splash.printLocalizedText("splash.debug.download.md5");
-		
-		try
-		{
-			// Download the MD5 files from the server.
-			new DownloaderThread("MD5 Downloader", "download.digest", "md5.downloaded").run();
-		
-			// Compare the extant and downloaded MD5 hash.
-			this.splash.printLocalizedText("splash.debug.compare");
-			if(!this.compareMD5s())
-			{
-				this.splash.printLocalizedText("splash.debug.compare.mismatch");
-				Main.log("MD5 mismatch! Downloading new update files...");
-				
-				// MD5 mismatch; redownload the mod update folder.
-				new DownloaderThread("Updates Downloader", "download.updates", "update.downloaded").run();
-				
-				this.splash.printLocalizedText("splash.debug.extract");
-				new UnzippingThread("Updates Unzipper", "update.downloaded", "update.folder").run();
-				
-				this.splash.printLocalizedText("splash.debug.copy.md5");
-				
-				// Overwrite extant MD5 file to prevent unnecessary downloading.
-				this.copyMD5s();
-			}
-			else
-			{
-				this.splash.printLocalizedText("splash.debug.compare.match");
-				Main.log("MD5 match! No further action needed. Continuing.");
-			}
-		}
-		catch(RuntimeException exception)
-		{
-			this.splash.printLocalizedText("splash.debug.failure");
-			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
-				exception, 
-				"Failed to download files: ", 
-				Level.SEVERE);
-		}
-		
-		//Set up update lists
-		this.splash.printLocalizedText("splash.debug.update.populate");
-		try
-		{
-			new UpdateReadTask().run();
-			this.splash.printLocalizedText("splash.debug.update.complete");
-		}
-		catch(RuntimeException e)
-		{
-			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
-				e,
-				"Update read task did not complete successfully: ",
-				Level.SEVERE);
-		}
+		setScreenOnTop.start();		
 		
 		this.splash.printLocalizedText("splash.debug.load.images");
 		ScreenMain.intializeImageList();
 		
+//		this.splash.printLocalizedText("splash.debug.download.md5");
+//		
+//		try
+//		{
+//			// Download the MD5 files from the server.
+//			new DownloaderThread("MD5 Downloader", "download.digest", "md5.downloaded").run();
+//		
+//			// Compare the extant and downloaded MD5 hash.
+//			this.splash.printLocalizedText("splash.debug.compare");
+//			if(!this.compareMD5s())
+//			{
+//				this.splash.printLocalizedText("splash.debug.compare.mismatch");
+//				Main.log("MD5 mismatch! Downloading new update files...");
+//				
+//				// MD5 mismatch; redownload the mod update folder.
+//				new DownloaderThread("Updates Downloader", "download.updates", "update.downloaded").run();
+//				
+//				this.splash.printLocalizedText("splash.debug.extract");
+//				new UnzippingThread("Updates Unzipper", "update.downloaded", "update.folder").run();
+//				
+//				this.splash.printLocalizedText("splash.debug.copy.md5");
+//				
+//				// Overwrite extant MD5 file to prevent unnecessary downloading.
+//				this.copyMD5s();
+//			}
+//			else
+//			{
+//				this.splash.printLocalizedText("splash.debug.compare.match");
+//				Main.log("MD5 match! No further action needed. Continuing.");
+//			}
+//		}
+//		catch(RuntimeException exception)
+//		{
+//			this.splash.printLocalizedText("splash.debug.failure");
+//			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
+//				exception, 
+//				"Failed to download files: ", 
+//				Level.SEVERE);
+//		}
+//		
+//		//Set up update lists
+//		this.splash.printLocalizedText("splash.debug.update.populate");
+//		try
+//		{
+//			new UpdateReadTask().run();
+//			this.splash.printLocalizedText("splash.debug.update.complete");
+//		}
+//		catch(RuntimeException e)
+//		{
+//			LoggingUtil.writeStackTraceToLogger(Main.debugLogger,
+//				e,
+//				"Update read task did not complete successfully: ",
+//				Level.SEVERE);
+//		}
+//		
 		try
 		{
 			this.splash.printLocalizedText("splash.debug.completion");
