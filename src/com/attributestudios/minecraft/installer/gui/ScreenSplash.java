@@ -16,10 +16,10 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.attributestudios.api.swing.JImagePane;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.minecraft.installer.Main;
 import com.attributestudios.minecraft.installer.Settings;
-import com.attributestudios.minecraft.installer.gui.swing.JImagePane;
 
 
 /**

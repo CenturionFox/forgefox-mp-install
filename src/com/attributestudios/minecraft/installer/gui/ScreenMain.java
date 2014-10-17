@@ -15,20 +15,15 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-
-import com.attributestudios.minecraft.installer.Main;
-import com.attributestudios.minecraft.installer.enums.ModImage;
-import com.attributestudios.minecraft.installer.gui.swing.JImagePane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.border.BevelBorder;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
+
+import com.attributestudios.api.swing.JImagePane;
+import com.attributestudios.minecraft.installer.Main;
+import com.attributestudios.minecraft.installer.enums.ModImage;
 
 public class ScreenMain extends JFrame implements Runnable
 {
@@ -38,7 +33,7 @@ public class ScreenMain extends JFrame implements Runnable
 	private static ArrayList<BufferedImage> imagesList;
 	
 	private static boolean imageListInitialized = false;
-	private JImagePane imageLabel;
+	private JImagePane imagePane;
 	
 	private int currentIconIndex;
 	
@@ -52,9 +47,6 @@ public class ScreenMain extends JFrame implements Runnable
 	/**
 	 * Create the main screen.
 	 */
-	/**
-	 * 
-	 */
 	public ScreenMain()
 	{
 		if(!imageListInitialized)
@@ -63,7 +55,7 @@ public class ScreenMain extends JFrame implements Runnable
 		}
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 825, 500);
+		this.setBounds(100, 100, 865, 500);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(this.contentPane);
@@ -76,32 +68,32 @@ public class ScreenMain extends JFrame implements Runnable
 		JTabbedPane modTabs = new JTabbedPane(JTabbedPane.TOP);
 		modTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
-		GroupLayout gl_contentPane = new GroupLayout(this.contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+		GroupLayout contentPaneGroupLayout = new GroupLayout(this.contentPane);
+		contentPaneGroupLayout.setHorizontalGroup(
+			contentPaneGroupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(contentPaneGroupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(modTabs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(modTabs)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(advancedOptionsPanel, GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+					.addComponent(advancedOptionsPanel, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+		contentPaneGroupLayout.setVerticalGroup(
+			contentPaneGroupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(contentPaneGroupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(modTabs, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
-						.addComponent(advancedOptionsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE))
+					.addGroup(contentPaneGroupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(advancedOptionsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+						.addComponent(modTabs, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		
-		JPanel tabPanel0 = new JPanel();
-		modTabs.addTab(Main.english.localize("ui.tabs.fullinstall"), null, tabPanel0, Main.english.localize("ui.tabs.fullinstall.tip"));
+		JPanel fullInstallTabPanel = new JPanel();
+		modTabs.addTab(Main.english.localize("ui.tabs.fullinstall"), null, fullInstallTabPanel, Main.english.localize("ui.tabs.fullinstall.tip"));
 		
-		JPanel imagePanel = new JPanel();
-		imagePanel.setBorder(UIManager.getBorder("TitledBorder.border"));
-		imagePanel.setLayout(new BorderLayout(0, 0));
+		JPanel imageControlPanel = new JPanel();
+		imageControlPanel.setBorder(UIManager.getBorder("TitledBorder.border"));
+		imageControlPanel.setLayout(new BorderLayout(0, 0));
 		
 		// Define "previous image" buttons
 		JButton iterateImageLeft = new JButton("◄");
@@ -124,7 +116,7 @@ public class ScreenMain extends JFrame implements Runnable
 				ScreenMain.this.setCurrentImagePaneIndex(ScreenMain.this.currentIconIndex);
 			}
 		});
-		imagePanel.add(iterateImageLeft, BorderLayout.WEST);
+		imageControlPanel.add(iterateImageLeft, BorderLayout.WEST);
 		
 		
 		// Define "next image" button.
@@ -148,36 +140,53 @@ public class ScreenMain extends JFrame implements Runnable
 				ScreenMain.this.setCurrentImagePaneIndex(ScreenMain.this.currentIconIndex);
 			}
 		});
-		imagePanel.add(iterateImageRight, BorderLayout.EAST);
+		imageControlPanel.add(iterateImageRight, BorderLayout.EAST);
 		
 		
-		this.imageLabel = new JImagePane(null);
-		imagePanel.add(this.imageLabel, BorderLayout.CENTER);
+		this.imagePane = new JImagePane(null);
+		imageControlPanel.add(this.imagePane, BorderLayout.CENTER);
 		
-		
-		JPanel installOptionsPanel0 = new JPanel();
-		installOptionsPanel0.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GroupLayout gl_tabPanel0 = new GroupLayout(tabPanel0);
-		gl_tabPanel0.setHorizontalGroup(
-			gl_tabPanel0.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_tabPanel0.createSequentialGroup()
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GroupLayout fullInstallTabLayout = new GroupLayout(fullInstallTabPanel);
+		fullInstallTabLayout.setHorizontalGroup(
+			fullInstallTabLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, fullInstallTabLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_tabPanel0.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(installOptionsPanel0, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(imagePanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		gl_tabPanel0.setVerticalGroup(
-			gl_tabPanel0.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_tabPanel0.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(imagePanel, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(installOptionsPanel0, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+					.addGroup(fullInstallTabLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(Alignment.LEADING, fullInstallTabLayout.createSequentialGroup()
+							.addGap(2)
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 592, GroupLayout.PREFERRED_SIZE))
+						.addComponent(imageControlPanel, GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
 					.addContainerGap())
 		);
-		tabPanel0.setLayout(gl_tabPanel0);
-		this.contentPane.setLayout(gl_contentPane);
+		fullInstallTabLayout.setVerticalGroup(
+			fullInstallTabLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(fullInstallTabLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(imageControlPanel, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		fullInstallTabPanel.setLayout(fullInstallTabLayout);
+		
+		
+		// FOR LOOP GOES HERE
+		
+		JPanel temp_modpanel = new JPanel();
+		modTabs.addTab("New tab", null, temp_modpanel, null);
+		GroupLayout gl_temp_modpanel = new GroupLayout(temp_modpanel);
+		gl_temp_modpanel.setHorizontalGroup(
+			gl_temp_modpanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 618, Short.MAX_VALUE)
+		);
+		gl_temp_modpanel.setVerticalGroup(
+			gl_temp_modpanel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 400, Short.MAX_VALUE)
+		);
+		temp_modpanel.setLayout(gl_temp_modpanel);
+		this.contentPane.setLayout(contentPaneGroupLayout);
 	}
 
 	/**
@@ -216,8 +225,8 @@ public class ScreenMain extends JFrame implements Runnable
 	 */
 	public void setCurrentImagePaneIndex(int index) 
 	{
-		this.imageLabel.setImage(imagesList.get(index));
-		this.imageLabel.setToolTipText(Main.english.localize("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
+		this.imagePane.setImage(imagesList.get(index));
+		this.imagePane.setToolTipText(Main.english.localize("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
 		
 		synchronized(this.lock)
 		{
@@ -252,9 +261,9 @@ public class ScreenMain extends JFrame implements Runnable
 			try
 			{
 				Thread.sleep(1000);
-			} catch(InterruptedException e)
+			} catch(InterruptedException e) 
 			{
-				// continue unconcerned
+				Main.log("Sleep interrupted in main screen image iterator; ignoring!", Level.FINER);
 			}
 		}
 	}
