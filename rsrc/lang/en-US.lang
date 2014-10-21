@@ -21,10 +21,15 @@ system.help.switch=Option\t\t\t
 system.help.switch.def=Definition
 system.help.switch.help=-?\t\t\t
 system.help.switch.help.def=Displays this help information and then exits.
+system.help.switch.help.verbose=\t\t\t--help (Verbose Argument)
 system.help.switch.dropbox=-D\t\t\t
 system.help.switch.dropbox.def=Forces a build of any non-built update files.  After this is complete, the program will exit.
 system.help.switch.debuglog=-d:<logging level>\t
 system.help.switch.debuglog.def=Enables verbose output of the specified output level.
+system.help.switch.debuglog.verbose=\t\t\t--debugLoggingLevel:<logging level> (Verbose Argument)
+system.help.switch.lookandfeel=-l:<L&F class name>\t
+system.help.switch.lookandfeel.def=Sets the look and feel of the program.
+system.help.switch.lookandfeel.verbose=\t\t\t--lookAndFeel:<L&F class name> (Verbose Argument)
 
 # Splash: Variables used when displaying and localizing splash screen values.
 splash.progress=Progress:

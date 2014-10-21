@@ -21,7 +21,7 @@ public class MainWindowTasks implements Runnable
 		
 		while(this.mainScreen.isVisible())
 		{
-		 ;
+			;
 		}
 	}
 

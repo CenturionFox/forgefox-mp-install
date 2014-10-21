@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.UIManager;
+
 import com.attributestudios.api.util.Localizer;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.api.util.logging.SimpleLogFormatter;
@@ -62,6 +64,7 @@ public class Main
 		english.initialize();
 		
 		Settings.loadConfig();
+		Settings.loadLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		Settings.parseCommands(args);
 		
 		if(!Settings.isDropbox())

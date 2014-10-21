@@ -1,6 +1,7 @@
 package com.attributestudios.minecraft.installer.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -15,10 +16,13 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import com.attributestudios.api.swing.JImagePane;
@@ -146,18 +150,16 @@ public class ScreenMain extends JFrame implements Runnable
 		this.imagePane = new JImagePane(null);
 		imageControlPanel.add(this.imagePane, BorderLayout.CENTER);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		JPanel fullInstallOptionsPanel = new JPanel();
+		fullInstallOptionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout fullInstallTabLayout = new GroupLayout(fullInstallTabPanel);
 		fullInstallTabLayout.setHorizontalGroup(
-			fullInstallTabLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, fullInstallTabLayout.createSequentialGroup()
+			fullInstallTabLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(fullInstallTabLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(fullInstallTabLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(Alignment.LEADING, fullInstallTabLayout.createSequentialGroup()
-							.addGap(2)
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 592, GroupLayout.PREFERRED_SIZE))
-						.addComponent(imageControlPanel, GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
+					.addGroup(fullInstallTabLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(imageControlPanel, GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+						.addComponent(fullInstallOptionsPanel, GroupLayout.PREFERRED_SIZE, 594, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		fullInstallTabLayout.setVerticalGroup(
@@ -166,7 +168,7 @@ public class ScreenMain extends JFrame implements Runnable
 					.addContainerGap()
 					.addComponent(imageControlPanel, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+					.addComponent(fullInstallOptionsPanel, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		fullInstallTabPanel.setLayout(fullInstallTabLayout);
@@ -174,18 +176,40 @@ public class ScreenMain extends JFrame implements Runnable
 		
 		// FOR LOOP GOES HERE
 		
-		JPanel temp_modpanel = new JPanel();
-		modTabs.addTab("New tab", null, temp_modpanel, null);
-		GroupLayout gl_temp_modpanel = new GroupLayout(temp_modpanel);
-		gl_temp_modpanel.setHorizontalGroup(
-			gl_temp_modpanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 618, Short.MAX_VALUE)
+		JPanel modpanel = new JPanel();
+		modTabs.addTab(/*TODO: DYNAMIC: MOD UPDATE DATE*/"<dynamic>", null, modpanel, null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		
+		JPanel modInstallOptionsPanel = new JPanel();
+		modInstallOptionsPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		GroupLayout gl_modpanel = new GroupLayout(modpanel);
+		gl_modpanel.setHorizontalGroup(
+			gl_modpanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_modpanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_modpanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
+						.addComponent(modInstallOptionsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE))
+					.addContainerGap())
 		);
-		gl_temp_modpanel.setVerticalGroup(
-			gl_temp_modpanel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 400, Short.MAX_VALUE)
+		gl_modpanel.setVerticalGroup(
+			gl_modpanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_modpanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(modInstallOptionsPanel, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
-		temp_modpanel.setLayout(gl_temp_modpanel);
+		
+		JTextPane textPane = new JTextPane();
+		scrollPane.setViewportView(textPane);
+		modpanel.setLayout(gl_modpanel);
+		
+		// END FOR LOOP
+		
 		this.contentPane.setLayout(contentPaneGroupLayout);
 	}
 

@@ -7,6 +7,9 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import com.attributestudios.api.util.ConfigurationLoader;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.minecraft.installer.enums.ModImage;
@@ -48,7 +51,7 @@ public class Settings
 		for(String s : programArgs)
 		{
 			// Switch to output help for switches
-			if("-?".equals(s))
+			if("-?".equals(s) || "--help".equals(s))
 			{
 				printCommandHelp();
 				System.exit(0);
@@ -59,10 +62,17 @@ public class Settings
 				updateDropbox = true;
 			}
 			// Switch to enable verbose logging in the specified level
-			else if(s.matches("[-d:]\\S+"))
+			else if(s.matches("-d:\\S+") || s.matches("--debugLoggingLevel:\\S+"))
 			{
 				String levelName = s.split(":")[1].toUpperCase();
+				System.out.println("[ForgeFox Installer Args Parser] [INFO] Setting logger levels to " + levelName + "...");
 				setupLoggers(levelName);
+			}
+			else if(s.matches("-l:\\S+") || s.matches("--lookAndFeel:\\S+"))
+			{
+				String lookAndFeelName = s.split(":")[1];
+				System.out.println("[Forgefox Installer Args Parser] [INFO] Attempt to set look and feel to " + lookAndFeelName);
+				loadLookAndFeel(lookAndFeelName);
 			}
 		}
 	}
@@ -154,17 +164,36 @@ public class Settings
 			System.out.println();
 			System.out.print(Main.english.localize("system.help.switch"));
 			System.out.println(Main.english.localize("system.help.switch.def"));
+			System.out.println();
 			System.out.print(Main.english.localize("system.help.switch.help"));
 			System.out.println(Main.english.localize("system.help.switch.help.def"));
+			System.out.println(Main.english.localize("system.help.switch.help.verbose"));
 			System.out.print(Main.english.localize("system.help.switch.dropbox"));
 			System.out.println(Main.english.localize("system.help.switch.dropbox.def"));
 			System.out.print(Main.english.localize("system.help.switch.debuglog"));
 			System.out.println(Main.english.localize("system.help.switch.debuglog.def"));
+			System.out.println(Main.english.localize("system.help.switch.debuglog.verbose"));
+			System.out.print(Main.english.localize("system.help.switch.lookandfeel"));
+			System.out.println(Main.english.localize("system.help.switch.lookandfeel.def"));
+			System.out.println(Main.english.localize("system.help.switch.lookandfeel.verbose"));
+
 		}
 		else
 		{
 			Main.log("Unable to load the localizer. Help cannot be displayed.", Level.SEVERE);
 			System.exit(1);
+		}
+	}
+
+	public static void loadLookAndFeel(String lookAndFeelClassName)
+	{
+		try
+		{
+			UIManager.setLookAndFeel(lookAndFeelClassName);
+		}
+		catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1)
+		{
+			e1.printStackTrace();
 		}
 	}
 }
