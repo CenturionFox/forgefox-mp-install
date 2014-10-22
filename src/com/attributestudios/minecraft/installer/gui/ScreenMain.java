@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -28,6 +29,8 @@ import javax.swing.border.TitledBorder;
 import com.attributestudios.api.swing.JImagePane;
 import com.attributestudios.minecraft.installer.Main;
 import com.attributestudios.minecraft.installer.enums.ModImage;
+
+import java.awt.Font;
 
 public class ScreenMain extends JFrame implements Runnable
 {
@@ -148,6 +151,11 @@ public class ScreenMain extends JFrame implements Runnable
 		
 		
 		this.imagePane = new JImagePane(null);
+		this.imagePane.setVerticalAlignment(SwingConstants.BOTTOM);
+		this.imagePane.setHorizontalAlignment(SwingConstants.CENTER);
+		this.imagePane.setForeground(Color.WHITE);
+		this.imagePane.setFont(new Font("Dialog", Font.BOLD, 12));
+		this.imagePane.setText("<dynamic>");
 		imageControlPanel.add(this.imagePane, BorderLayout.CENTER);
 		
 		JPanel fullInstallOptionsPanel = new JPanel();
@@ -250,7 +258,7 @@ public class ScreenMain extends JFrame implements Runnable
 	public void setCurrentImagePaneIndex(int index) 
 	{
 		this.imagePane.setImage(imagesList.get(index));
-		this.imagePane.setToolTipText(Main.english.localize("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
+		this.imagePane.setText(Main.english.localize("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
 		
 		synchronized(this.lock)
 		{

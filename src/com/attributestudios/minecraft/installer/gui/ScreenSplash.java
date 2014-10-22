@@ -15,7 +15,6 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 import com.attributestudios.api.swing.JImagePane;
 import com.attributestudios.api.util.logging.LoggingUtil;
@@ -84,27 +83,26 @@ public class ScreenSplash extends JFrame implements Runnable
 
 		this.progressOutput = new JLabel();
 		this.progressOutput.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		this.progressOutput.setVerticalAlignment(SwingConstants.BOTTOM);
+		this.progressOutput.setVerticalAlignment(SwingConstants.TOP);
 		this.progressOutput.setBackground(Color.LIGHT_GRAY);
 		this.progressOutput.setForeground(Color.WHITE);
-		this.progressOutput.setBounds(10, 11, 530, 186);
+		this.progressOutput.setBounds(10, 10, 530, 190);
 		this.progressOutput.setOpaque(false);
 		this.contentPane.add(this.progressOutput);
 
 		this.userComfort = new JProgressBar();
 		this.userComfort.setForeground(UIManager.getColor("ProgressBar.foreground"));
 		this.userComfort.setIndeterminate(true);
-		this.userComfort.setBounds(10, 250, 530, 14);
+		this.userComfort.setBounds(10, 250, 530, 15);
 		this.contentPane.add(this.userComfort);
 
 		JLabel forgeFoxLabel = new JLabel("ForgeFox Installer " + Main.VERSION);
 		forgeFoxLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		forgeFoxLabel.setForeground(Color.WHITE);
-		forgeFoxLabel.setBounds(10, 209, 377, 29);
+		forgeFoxLabel.setBounds(10, 210, 530, 30);
 		this.contentPane.add(forgeFoxLabel);
 
 		JImagePane imgPane = new JImagePane(splashBG);
-		imgPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		imgPane.setBounds(0, 0, 550, 275);
 		this.contentPane.add(imgPane);
 
