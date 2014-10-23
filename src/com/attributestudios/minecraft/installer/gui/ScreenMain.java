@@ -40,7 +40,7 @@ public class ScreenMain extends JFrame implements Runnable
 	private static ArrayList<BufferedImage> imagesList;
 	
 	private static boolean imageListInitialized = false;
-	private JImagePane imagePane;
+	private JImagePane modImagePane;
 	
 	private int currentIconIndex;
 	
@@ -149,12 +149,12 @@ public class ScreenMain extends JFrame implements Runnable
 		});
 		imageControlPanel.add(iterateImageRight, BorderLayout.EAST);
 		
-		this.imagePane = new JImagePane(null);
-		this.imagePane.setTextBackground(true);
-		this.imagePane.setVerticalAlignment(SwingConstants.BOTTOM);
-		this.imagePane.setHorizontalAlignment(SwingConstants.CENTER);
-		this.imagePane.setFont(new Font("Dialog", Font.PLAIN, 12));
-		imageControlPanel.add(this.imagePane, BorderLayout.CENTER);
+		this.modImagePane = new JImagePane();
+		this.modImagePane.setTextBackgroundDrawn(true);
+		this.modImagePane.setVerticalAlignment(SwingConstants.BOTTOM);
+		this.modImagePane.setHorizontalAlignment(SwingConstants.CENTER);
+		this.modImagePane.setFont(new Font("Dialog", Font.PLAIN, 12));
+		imageControlPanel.add(this.modImagePane, BorderLayout.CENTER);
 		
 		JPanel fullInstallOptionsPanel = new JPanel();
 		fullInstallOptionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -255,8 +255,8 @@ public class ScreenMain extends JFrame implements Runnable
 	 */
 	public void setCurrentImagePaneIndex(int index) 
 	{
-		this.imagePane.setImage(imagesList.get(index));
-		this.imagePane.setText(Main.english.localize("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
+		this.modImagePane.setImage(imagesList.get(index));
+		this.modImagePane.setText(Main.english.localize("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
 		
 		synchronized(this.lock)
 		{
