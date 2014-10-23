@@ -14,7 +14,7 @@ import com.attributestudios.minecraft.installer.Settings;
  * @version 1.0.0
  * @date.	2014-08-18
  */
-public class DownloaderThread extends Thread
+public class DownloaderThread extends Thread 
 {
 	private String settingsURL;
 	private String outputFile;

@@ -71,8 +71,8 @@ public class Main
 		{
 			// Delegate current to the new thread, wait until that
 			// 	   thread's execution is complete before continuing.
-			new InitializationTask().run();
-			new MainWindowTasks().run();
+			new InitializationTask().call();
+			new MainWindowTasks().call();
 		}
 		else
 		{

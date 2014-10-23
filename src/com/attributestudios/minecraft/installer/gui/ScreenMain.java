@@ -149,13 +149,11 @@ public class ScreenMain extends JFrame implements Runnable
 		});
 		imageControlPanel.add(iterateImageRight, BorderLayout.EAST);
 		
-		
 		this.imagePane = new JImagePane(null);
+		this.imagePane.setTextBackground(true);
 		this.imagePane.setVerticalAlignment(SwingConstants.BOTTOM);
 		this.imagePane.setHorizontalAlignment(SwingConstants.CENTER);
-		this.imagePane.setForeground(Color.WHITE);
-		this.imagePane.setFont(new Font("Dialog", Font.BOLD, 12));
-		this.imagePane.setText("<dynamic>");
+		this.imagePane.setFont(new Font("Dialog", Font.PLAIN, 12));
 		imageControlPanel.add(this.imagePane, BorderLayout.CENTER);
 		
 		JPanel fullInstallOptionsPanel = new JPanel();
@@ -182,7 +180,7 @@ public class ScreenMain extends JFrame implements Runnable
 		fullInstallTabPanel.setLayout(fullInstallTabLayout);
 		
 		
-		// FOR LOOP GOES HERE
+//////////////////////////// FOR LOOP HERE ////////////////////////////
 		
 		JPanel modpanel = new JPanel();
 		modTabs.addTab(/*TODO: DYNAMIC: MOD UPDATE DATE*/"<dynamic>", null, modpanel, null);
@@ -216,7 +214,7 @@ public class ScreenMain extends JFrame implements Runnable
 		scrollPane.setViewportView(textPane);
 		modpanel.setLayout(gl_modpanel);
 		
-		// END FOR LOOP
+//////////////////////////// END FOR LOOP ////////////////////////////
 		
 		this.contentPane.setLayout(contentPaneGroupLayout);
 	}
