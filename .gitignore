@@ -14,8 +14,8 @@ hs_err_pid*
 /bin/
 /temp/
 /updates/
-/src/TestXML.java
 
 .zip
 .classpath
 updates.md5
+TestXML.java
