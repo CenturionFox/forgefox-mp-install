@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.attributestudios.minecraft.installer.enums.FileAction;
 import com.attributestudios.minecraft.installer.enums.ResourceType;
@@ -16,7 +19,7 @@ public class TestXML {
 	{
 		Update update = new Update();
 		
-		update.setUpdateDate("2014-09-01");
+		update.setUpdateDate(new SimpleDateFormat("yyyy-mm-dd").format(new Date()));
 		
 		UpdateModFile modFile = new UpdateModFile();
 		modFile.setAction(FileAction.REPLACE);
