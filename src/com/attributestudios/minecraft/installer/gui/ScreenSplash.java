@@ -119,7 +119,7 @@ public class ScreenSplash extends JFrame implements Runnable
 	 */
 	public void printLocalizedText(String textUnlocalized)
 	{
-		String localized = Main.english.localize(textUnlocalized);
+		String localized = Main.english.getProperty(textUnlocalized);
 		this.progressOutput.setText(this.progressOutput.getText() + "<br>" + localized);
 	}
 

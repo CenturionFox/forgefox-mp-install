@@ -31,7 +31,7 @@ public class UpdateReadTask implements Runnable
 	public void run()
 	{
 		List<File> validUpdateFiles;
-		File updateDirectory = new File(Settings.config.getValue("update.folder", "./updates"));
+		File updateDirectory = new File(Settings.config.getProperty("update.folder", "./updates"));
 		
 		// Create the update directory
 		if(!updateDirectory.exists()) updateDirectory.mkdirs();
@@ -41,7 +41,7 @@ public class UpdateReadTask implements Runnable
 		if(!updateDirectory.isDirectory())
 		{
 			throw new RuntimeException(
-					new FileSystemException("File " + Settings.config.getValue("update.folder", "./updates") + " is not a directory!"));
+					new FileSystemException("File " + Settings.config.getProperty("update.folder", "./updates") + " is not a directory!"));
 		}
 		
 		validUpdateFiles = Arrays.asList(updateDirectory.listFiles(new FileFilter()

@@ -1,7 +1,9 @@
 package com.attributestudios.minecraft.installer;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -10,7 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.attributestudios.api.util.ConfigurationLoader;
 import com.attributestudios.api.util.logging.LoggingUtil;
 import com.attributestudios.minecraft.installer.enums.ModImage;
 
@@ -27,7 +28,7 @@ public class Settings
 	/**
 	 * Loads the default settings as defined in the configuration file.
 	 */
-	public static ConfigurationLoader config;
+	public static Properties config;
 	
 	/**
 	 * Boolean determining whether or not the program should attempt to zip all
@@ -97,12 +98,19 @@ public class Settings
 	public static void loadConfig()
 	{
 		// Load static configuration file
-		config = new ConfigurationLoader(Main.class.getClassLoader().getResourceAsStream("config/main.properties"));
-		config.initialize();
+		config = new Properties();
+		try
+		{
+			config.load(Main.class.getClassLoader().getResourceAsStream("config/main.properties"));
+		}
+		catch(IOException e)
+		{
+			Main.log("Configuration load failed!", Level.WARNING);
+		}
 		
-		setupLoggers(config.getValue("loglevel", "info").toUpperCase());
+		setupLoggers(config.getProperty("loglevel", "info").toUpperCase());
 		
-		splashScreenImage = ModImage.valueOf(config.getValue("splashimg", "fox").toUpperCase());
+		splashScreenImage = ModImage.valueOf(config.getProperty("splashimg", "fox").toUpperCase());
 	}
 
 	/**
@@ -120,7 +128,7 @@ public class Settings
 		{
 			level = Level.parse(levelName);
 			// Load in all these utility classes to initialize their static loggers.
-			Class.forName("com.attributestudios.api.util.Localizer");
+			Class.forName("com.attributestudios.api.util.getPropertyr");
 			Class.forName("com.attributestudios.api.util.ConfigurationLoader");
 			Class.forName("com.attributestudios.api.util.io.ResourceDownloader");
 			Class.forName("com.attributestudios.api.util.io.ZippingUtils");
@@ -152,35 +160,35 @@ public class Settings
 	}
 	
 	/**
-	 * Outputs localized command-line switch help information.
+	 * Outputs getPropertyd command-line switch help information.
 	 */
 	public static void printCommandHelp()
 	{
 		if(Main.english != null)
 		{
-			System.out.println(Main.english.localize("system.help.intro"));
-			System.out.println(Main.english.localize("system.help.warn"));
-			System.out.println(Main.english.localize("system.help.warn1"));
+			System.out.println(Main.english.getProperty("system.help.intro"));
+			System.out.println(Main.english.getProperty("system.help.warn"));
+			System.out.println(Main.english.getProperty("system.help.warn1"));
 			System.out.println();
-			System.out.print(Main.english.localize("system.help.switch"));
-			System.out.println(Main.english.localize("system.help.switch.def"));
+			System.out.print(Main.english.getProperty("system.help.switch"));
+			System.out.println(Main.english.getProperty("system.help.switch.def"));
 			System.out.println();
-			System.out.print(Main.english.localize("system.help.switch.help"));
-			System.out.println(Main.english.localize("system.help.switch.help.def"));
-			System.out.println(Main.english.localize("system.help.switch.help.verbose"));
-			System.out.print(Main.english.localize("system.help.switch.dropbox"));
-			System.out.println(Main.english.localize("system.help.switch.dropbox.def"));
-			System.out.print(Main.english.localize("system.help.switch.debuglog"));
-			System.out.println(Main.english.localize("system.help.switch.debuglog.def"));
-			System.out.println(Main.english.localize("system.help.switch.debuglog.verbose"));
-			System.out.print(Main.english.localize("system.help.switch.lookandfeel"));
-			System.out.println(Main.english.localize("system.help.switch.lookandfeel.def"));
-			System.out.println(Main.english.localize("system.help.switch.lookandfeel.verbose"));
+			System.out.print(Main.english.getProperty("system.help.switch.help"));
+			System.out.println(Main.english.getProperty("system.help.switch.help.def"));
+			System.out.println(Main.english.getProperty("system.help.switch.help.verbose"));
+			System.out.print(Main.english.getProperty("system.help.switch.dropbox"));
+			System.out.println(Main.english.getProperty("system.help.switch.dropbox.def"));
+			System.out.print(Main.english.getProperty("system.help.switch.debuglog"));
+			System.out.println(Main.english.getProperty("system.help.switch.debuglog.def"));
+			System.out.println(Main.english.getProperty("system.help.switch.debuglog.verbose"));
+			System.out.print(Main.english.getProperty("system.help.switch.lookandfeel"));
+			System.out.println(Main.english.getProperty("system.help.switch.lookandfeel.def"));
+			System.out.println(Main.english.getProperty("system.help.switch.lookandfeel.verbose"));
 
 		}
 		else
 		{
-			Main.log("Unable to load the localizer. Help cannot be displayed.", Level.SEVERE);
+			Main.log("Unable to load the getPropertyr. Help cannot be displayed.", Level.SEVERE);
 			System.exit(1);
 		}
 	}

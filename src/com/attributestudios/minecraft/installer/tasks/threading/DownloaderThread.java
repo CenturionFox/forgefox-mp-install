@@ -34,8 +34,8 @@ public class DownloaderThread extends Thread
 			try
 			{
 				downloader.downloadFile(
-					new URL(Settings.config.getValue(this.settingsURL, "null")), 
-					new File(Settings.config.getValue(this.outputFile, "null")));
+					new URL(Settings.config.getProperty(this.settingsURL, "null")), 
+					new File(Settings.config.getProperty(this.outputFile, "null")));
 			}
 			catch (IOException e)
 			{

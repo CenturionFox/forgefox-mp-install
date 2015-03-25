@@ -4,6 +4,7 @@
 package com.attributestudios.minecraft.installer;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +61,15 @@ public class Main
 		
 		// Set up the English language localization
 		InputStream language = Main.class.getClassLoader().getResourceAsStream("lang/en-US.lang");
-		english = new Localizer(language, "en-US");
-		english.initialize();
+		english = new Localizer("en-US");
+		try
+		{
+			english.load(language);
+		}
+		catch(IOException e)
+		{
+			log("Language load failed!", Level.WARNING);
+		}
 		
 		Settings.loadConfig();
 		Settings.loadLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -79,15 +87,15 @@ public class Main
 			//TODO: Dropbox setup.
 		}
 		
-		File temp = new File(Settings.config.getValue("tempfile", "./temp"));
+		File temp = new File(Settings.config.getProperty("tempfile", "./temp"));
 		Main.log("Scheduling " + temp + " for deletion on exit.");
 		temp.deleteOnExit();
 		
-		temp = new File(Settings.config.getValue("md5.downloaded", "./temp/updates.md5"));
+		temp = new File(Settings.config.getProperty("md5.downloaded", "./temp/updates.md5"));
 		Main.log("Scheduling " + temp + " for deletion on exit.");
 		temp.deleteOnExit();
 		
-		temp = new File(Settings.config.getValue("update.downloaded", "./temp/temp_updates.zip"));
+		temp = new File(Settings.config.getProperty("update.downloaded", "./temp/temp_updates.zip"));
 		Main.log("Scheduling " + temp + " for deletion on exit.");
 		temp.deleteOnExit();
 		

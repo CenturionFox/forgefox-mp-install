@@ -34,8 +34,8 @@ public class UnzippingThread extends Thread
 			try
 			{
 				expander.extract(
-					new File(Settings.config.getValue(this.zippedFileLoc, "null")),
-					new File(Settings.config.getValue(this.unzipLocation, "null")));
+					new File(Settings.config.getProperty(this.zippedFileLoc, "null")),
+					new File(Settings.config.getProperty(this.unzipLocation, "null")));
 			}
 			catch (IOException e)
 			{

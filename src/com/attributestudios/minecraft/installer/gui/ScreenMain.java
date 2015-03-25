@@ -70,7 +70,7 @@ public class ScreenMain extends JFrame implements Runnable
 		this.setAutoRequestFocus(true);
 		
 		JPanel advancedOptionsPanel = new JPanel();
-		advancedOptionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.extrasettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		advancedOptionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.getProperty("ui.border.extrasettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		JTabbedPane modTabs = new JTabbedPane(JTabbedPane.TOP);
 		modTabs.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -96,7 +96,7 @@ public class ScreenMain extends JFrame implements Runnable
 		);
 		
 		JPanel fullInstallTabPanel = new JPanel();
-		modTabs.addTab(Main.english.localize("ui.tabs.fullinstall"), null, fullInstallTabPanel, Main.english.localize("ui.tabs.fullinstall.tip"));
+		modTabs.addTab(Main.english.getProperty("ui.tabs.fullinstall"), null, fullInstallTabPanel, Main.english.getProperty("ui.tabs.fullinstall.tip"));
 		
 		JPanel imageControlPanel = new JPanel();
 		imageControlPanel.setBorder(UIManager.getBorder("TitledBorder.border"));
@@ -157,7 +157,7 @@ public class ScreenMain extends JFrame implements Runnable
 		imageControlPanel.add(this.modImagePane, BorderLayout.CENTER);
 		
 		JPanel fullInstallOptionsPanel = new JPanel();
-		fullInstallOptionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		fullInstallOptionsPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), Main.english.getProperty("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout fullInstallTabLayout = new GroupLayout(fullInstallTabPanel);
 		fullInstallTabLayout.setHorizontalGroup(
 			fullInstallTabLayout.createParallelGroup(Alignment.TRAILING)
@@ -188,7 +188,7 @@ public class ScreenMain extends JFrame implements Runnable
 		JScrollPane scrollPane = new JScrollPane();
 		
 		JPanel modInstallOptionsPanel = new JPanel();
-		modInstallOptionsPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), Main.english.localize("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		modInstallOptionsPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), Main.english.getProperty("ui.border.installsettings"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		GroupLayout gl_modpanel = new GroupLayout(modpanel);
 		gl_modpanel.setHorizontalGroup(
@@ -256,7 +256,7 @@ public class ScreenMain extends JFrame implements Runnable
 	public void setCurrentImagePaneIndex(int index) 
 	{
 		this.modImagePane.setImage(imagesList.get(index));
-		this.modImagePane.setText(Main.english.localize("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
+		this.modImagePane.setText(Main.english.getProperty("img.tooltip." + ModImage.values()[index].toString().toLowerCase()));
 		
 		synchronized(this.lock)
 		{
