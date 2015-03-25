@@ -128,8 +128,7 @@ public class Settings
 		{
 			level = Level.parse(levelName);
 			// Load in all these utility classes to initialize their static loggers.
-			Class.forName("com.attributestudios.api.util.getPropertyr");
-			Class.forName("com.attributestudios.api.util.ConfigurationLoader");
+			Class.forName("com.attributestudios.api.util.Localizer");
 			Class.forName("com.attributestudios.api.util.io.ResourceDownloader");
 			Class.forName("com.attributestudios.api.util.io.ZippingUtils");
 		}
@@ -188,7 +187,7 @@ public class Settings
 		}
 		else
 		{
-			Main.log("Unable to load the getPropertyr. Help cannot be displayed.", Level.SEVERE);
+			Main.log("Unable to load the localizer. Help cannot be displayed.", Level.SEVERE);
 			System.exit(1);
 		}
 	}
